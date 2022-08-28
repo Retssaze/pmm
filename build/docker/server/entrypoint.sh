@@ -9,6 +9,7 @@ if [ ! -f $DIST_FILE ]; then
     mkdir -p /srv/{clickhouse,grafana,logs,postgres14,prometheus,nginx,victoriametrics}
     echo "Copy plugins and VERSION file"
     cp /usr/share/percona-dashboards/VERSION /srv/grafana/PERCONA_DASHBOARDS_VERSION
+    cp -r /usr/share/percona-dashboards/panels/ /srv/grafana/plugins
     chown -R grafana:grafana /srv/grafana
     chown pmm:pmm /srv/{victoriametrics,prometheus,logs}
     chown postgres:postgres /srv/postgres14
