@@ -1,0 +1,22 @@
+name: pmm-server-podman
+arch: all
+version: vPMM_TAG_VERSION
+homepage:  https://www.percona.com/
+description: Percona Monitoring and Management Server SystemD service
+maintainer: Percona LLC <support@percona.com>
+vendor: Percona LLC
+license: AGPLv3
+depends:
+  - podman
+  - systemd
+scripts:
+  preinstall: "build/packages/config/preinstall.sh"
+  postinstall: "build/packages/config/postinstall.sh"
+  preremove: "build/packages/config/preremove.sh"
+  postremove: "build/packages/config/postremove.sh"
+contents:
+  - src: build/packages/config/pmm-server-podman.service
+    dst: /etc/systemd/system/pmm-server.service
+  - src: build/packages/config/pmm-server.env
+    dst: /etc/pmm/pmm-server.env
+    type: "config|noreplace"

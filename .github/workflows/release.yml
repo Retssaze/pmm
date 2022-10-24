@@ -1,4 +1,4 @@
-name: Publish release changelog
+name: Publish release
 on:
   push:
     tags:
@@ -24,8 +24,17 @@ jobs:
           grep -rl '!!! alert alert-info' ${{ github.workspace }}-CHANGELOG.txt | xargs  sed -i 's/\!\!\! alert alert-info/\>/g'
           grep -rl '!!! note alert alert-primary' ${{ github.workspace }}-CHANGELOG.txt | xargs  sed -i 's/\!\!\! note alert alert-primary "\(.*\)"/\> \:memo\: **\1**/g'
           grep -rl '!!! note alert alert-primary' ${{ github.workspace }}-CHANGELOG.txt | xargs  sed -i 's/\!\!\! note alert alert-primary/\> \:memo\: **Note**/g'
+      - name: Sed current version for packages build
+        shell: bash
+        run: |
+          sed -i -e "s/PMM_TAG_VERSION/${{ github.ref }}/" build/packages/config/pmm-server-podman.service build/packages/nfpm.yaml
+      - name: Explain why this job ran
+        uses: docker://goreleaser/nfpm
+        with:
+          args: The ${{ github.event_name }} event triggered this step.
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           body_path: ${{ github.workspace }}-CHANGELOG.txt
+          files: "pmm-server-podman*"
           draft: true

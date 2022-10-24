@@ -1,0 +1,42 @@
+archives:
+  - name_template: "{{ .ProjectName }}-{{ .Version }}.{{ .Os }}-{{ .Arch }}"
+    wrap_in_directory: true
+snapshot:
+  name_template: "{{ .ShortCommit }}"
+builds:
+- skip: true
+changelog:
+  skip: true
+release:
+  github:
+    owner: percona
+    name: pmm
+  draft: true
+  prerelease: auto
+nfpms:
+  - file_name_template: "{{ .ProjectName }}-{{ .Version }}.{{ .Os }}-{{ .Arch }}"
+    homepage:  https://www.percona.com/
+    description: Percona Monitoring and Management Server SystemD service
+    maintainer: Percona
+    vendor: Percona
+    license: AGPLv3
+    formats:
+    - deb
+    - rpm
+    dependencies:
+      - podman
+      - systemd
+      - shadow-utils
+    replacements:
+      amd64: 64-bit
+    scripts:
+      preinstall: "build/packages/config/preinstall.sh"
+      postinstall: "build/packages/config/postinstall.sh"
+      preremove: "build/packages/config/preremove.sh"
+      postremove: "build/packages/config/postremove.sh"
+    contents:
+      - src: build/packages/config/pmm-server-podman.service
+        dst: /etc/systemd/system/pmm-server-podman.service
+      - src: build/packages/config/pmm-server.env
+        dst: /etc/pmm/pmm-server.env
+        type: "config|noreplace"
