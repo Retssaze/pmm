@@ -8,17 +8,17 @@
 %global repo            pmm
 %global provider        github.com/percona/%{repo}
 %global import_path     %{provider}
-%global commit	        592eddf656bce32a11bd958af0a32c62bd5ea34c
+%global commit	        abc7391d11f41dad60cb9c95c20ce97a4e9d1650
 %global shortcommit	    %(c=%{commit}; echo ${c:0:7})
 %define build_timestamp %(date -u +"%y%m%d%H%M")
-%define release         67
+%define release         68
 %define rpm_release     %{release}.%{build_timestamp}.%{shortcommit}%{?dist}
 
 # the line below is sed'ed by build/bin/build-server-rpm to set a correct version
 %define full_pmm_version 2.0.0
 
 Name:		pmm-update
-Version:	%{full_pmm_version}
+Version:	%{version}
 Release:	%{rpm_release}
 Summary:	Tool for updating packages and OS configuration for PMM Server
 
@@ -63,6 +63,9 @@ install -p -m 0755 bin/pmm-update %{buildroot}%{_sbindir}/
 
 
 %changelog
+* Tue Dec 13 2022 Nurlan Moldomurov <nurlan.moldomurov@percona.com> - 2.34.0-68
+- https://per.co.na/pmm/latest
+
 * Thu Dec 8 2022 Michal Kralik <michal.kralik@percona.com> - 2.34.0-67
 - PMM-11207 Migrate pmm-update to monorepo
 
